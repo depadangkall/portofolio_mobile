@@ -94,7 +94,7 @@ flutter analyze && flutter test   # cek kode & test
 
 **Tools yang dipakai:** Claude Code (model Claude Opus 5.5) di ekstensi VS Code, dengan akses ke folder proyek dan terminal.
 
-**Strategi prompting:** Saya memberikan PDF soal Tugas 7 lengkap ke Claude Code dan meminta tugas dikerjakan. Claude membaca kode hasil Tutorial 08 terlebih dahulu, lalu hanya mengubah bagian yang belum memenuhi checklist.
+**Strategi prompting:** Saya memberikan arahan kepada Claude untuk membaca kode hasil Tutorial 08 terlebih dahulu dan perintah dari tugas 7, lalu hanya mengubah bagian yang belum memenuhi checklist.
 
 **Bagian yang dibantu AI:**
 - Menambahkan atribut `color` ke `ItemHomepage` dan memakai `item.color` di `ItemCard` (warna biru, hijau, merah).
