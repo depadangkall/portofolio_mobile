@@ -122,3 +122,18 @@ flutter test           # menjalankan widget test
    Kita perlu **full restart** saat:
    - Menambah atau memperbarui package/plugin di `pubspec.yaml` yang punya kode native.
    - Mengubah kode native (Android/iOS), aset tertentu, atau konfigurasi seperti `AndroidManifest.xml`.
+
+## AI Disclosure
+
+**Tools yang dipakai:** Claude Code (model Claude Opus 5.5) di ekstensi VS Code, dengan akses ke folder proyek dan terminal.
+
+**Strategi prompting:** Saya memberikan PDF soal Tugas 7 lengkap ke Claude Code dan meminta tugas dikerjakan. Claude membaca kode hasil Tutorial 08 terlebih dahulu, lalu hanya mengubah bagian yang belum memenuhi checklist.
+
+**Bagian yang dibantu AI:**
+- Menambahkan atribut `color` ke `ItemHomepage` dan memakai `item.color` di `ItemCard` (warna biru, hijau, merah).
+- Memindahkan `InfoCard`, `ItemCard`, dan `ItemHomepage` ke `lib/widgets/` dan `lib/models/`, serta menambahkan komentar/docstring.
+- Mengganti test counter bawaan (yang gagal karena aplikasi sudah tidak punya counter) dengan widget test untuk halaman utama dan SnackBar.
+- Menyusun README ini, termasuk draf jawaban pertanyaan reflektif.
+- Membuat commit bertahap dengan format *conventional commits*.
+
+**Verifikasi dan batasan:** Hasil AI diverifikasi dengan `flutter analyze` (*No issues found!*) dan `flutter test` (semua test lolos). AI tidak bisa melihat tampilan aplikasi secara langsung, jadi tampilan tetap saya cek sendiri dengan `flutter run`. Jawaban pertanyaan reflektif sudah saya baca ulang dan cocokkan dengan dokumentasi Flutter serta materi Tutorial 08 agar saya memahaminya sendiri.
