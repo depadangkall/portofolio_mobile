@@ -3,7 +3,8 @@ import 'package:myportofolio_mobile/models/item_homepage.dart';
 
 /// Kartu tombol aksi pada halaman utama.
 ///
-/// Saat ditekan, kartu menampilkan [SnackBar] berisi nama tombol yang ditekan.
+/// Warna latar diambil langsung dari [ItemHomepage.color], dan saat ditekan
+/// kartu menampilkan [SnackBar] berisi nama tombol yang ditekan.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -12,7 +13,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.secondary,
+      color: item.color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
