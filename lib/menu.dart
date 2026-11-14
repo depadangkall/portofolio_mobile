@@ -3,14 +3,19 @@ import 'package:myportofolio_mobile/models/item_homepage.dart';
 import 'package:myportofolio_mobile/widgets/info_card.dart';
 import 'package:myportofolio_mobile/widgets/item_card.dart';
 
+/// Halaman utama aplikasi MyPortfolio.
+///
+/// Menampilkan tiga [InfoCard] berisi identitas pemilik portofolio dan
+/// sekumpulan [ItemCard] sebagai tombol aksi.
 class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   final String npm = "2506622481";
   final String nama = "I Gede Devadatta";
   final String kelas = "PBP A";
 
-  final List<ItemHomepage> items = [
+  /// Daftar tombol aksi; setiap item punya warna latar yang berbeda.
+  final List<ItemHomepage> items = const [
     ItemHomepage("Lihat Proyek", Icons.folder, Colors.blue),
     ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
     ItemHomepage("Logout", Icons.logout, Colors.red),
@@ -34,6 +39,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Baris berisi identitas pemilik portofolio.
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -56,6 +62,7 @@ class MyHomePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // Grid tombol aksi, tiga kolom.
                   GridView.count(
                     primary: true,
                     padding: const EdgeInsets.all(20),
@@ -63,9 +70,7 @@ class MyHomePage extends StatelessWidget {
                     mainAxisSpacing: 10,
                     crossAxisCount: 3,
                     shrinkWrap: true,
-                    children: items.map((ItemHomepage item) {
-                      return ItemCard(item);
-                    }).toList(),
+                    children: items.map((item) => ItemCard(item)).toList(),
                   ),
                 ],
               ),
