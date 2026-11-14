@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myportofolio_mobile/models/item_homepage.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -102,12 +103,6 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-class ItemHomepage {
-  final String name;
-  final IconData icon;
-
-  ItemHomepage(this.name, this.icon);
-}
 
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
