@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Kartu kecil yang menampilkan satu informasi profil pemilik portofolio
 /// (misalnya NPM, nama, atau kelas).

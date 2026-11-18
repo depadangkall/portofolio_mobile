@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/models/item_homepage.dart';
+import 'package:myportofolio_mobile/screens/project_form.dart';
 
 /// Kartu tombol aksi pada halaman utama.
 ///
 /// Warna latar diambil langsung dari [ItemHomepage.color], dan saat ditekan
-/// kartu menampilkan [SnackBar] berisi nama tombol yang ditekan.
+/// kartu menampilkan [SnackBar] berisi nama tombol yang ditekan. Tombol
+/// "Tambah Proyek" juga membuka [ProjectFormPage].
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -25,6 +27,16 @@ class ItemCard extends StatelessWidget {
                 content: Text("Kamu telah menekan tombol ${item.name}!"),
               ),
             );
+
+          // Navigate ke halaman yang sesuai
+          if (item.name == "Tambah Proyek") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProjectFormPage(),
+              ),
+            );
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),

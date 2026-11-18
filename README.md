@@ -18,6 +18,7 @@ flutter analyze && flutter test   # cek kode & test
 |---|---|
 | Tutorial 08 | Setup proyek, `menu.dart`, `MyHomePage` stateless, `InfoCard` & `ItemCard` |
 | Tugas 7 | Warna unik per tombol (`ItemHomepage.color`), widget & model dipisah ke `lib/widgets/` & `lib/models/`, widget test |
+| Tutorial 09 | `LeftDrawer` (Home / Add Project), `ProjectFormPage` dengan validasi & pop-up hasil, tombol Tambah Proyek → form, refactor ke `lib/screens/` & `lib/widgets/project_card.dart`, impor `material_ui` |
 
 ## Pertanyaan Reflektif
 
