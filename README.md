@@ -1,6 +1,6 @@
 # MyPortfolio Mobile
 
-Aplikasi Flutter portofolio pribadi **I Gede Devadatta** (2506622481, PBP A). Menampilkan kartu NPM/nama/kelas dan tiga tombol aksi berwarna (Lihat Proyek, Tambah Proyek, Logout) yang memunculkan `SnackBar` saat ditekan.
+Aplikasi Flutter portofolio pribadi **I Gede Devadatta** (2506622481, PBP A). Menampilkan kartu NPM/nama/kelas, tombol aksi berwarna (Lihat Proyek, Tambah Proyek, Tambah Edukasi, Logout), drawer navigasi, serta formulir Tambah Proyek dan Tambah Edukasi dengan validasi dan dialog ringkasan.
 
 ## Cara Menjalankan
 
@@ -19,6 +19,7 @@ flutter analyze && flutter test   # cek kode & test
 | Tutorial 08 | Setup proyek, `menu.dart`, `MyHomePage` stateless, `InfoCard` & `ItemCard` |
 | Tugas 7 | Warna unik per tombol (`ItemHomepage.color`), widget & model dipisah ke `lib/widgets/` & `lib/models/`, widget test |
 | Tutorial 09 | `LeftDrawer` (Home / Add Project), `ProjectFormPage` dengan validasi & pop-up hasil, tombol Tambah Proyek → form, refactor ke `lib/screens/` & `lib/widgets/project_card.dart`, impor `material_ui` |
+| Tugas 8 | `EducationFormPage` (`lib/screens/education_form.dart`): institusi, jenjang, jurusan, tanggal mulai/selesai (`showDatePicker`), IPK; validasi kosong/spasi, panjang maks, rentang IPK, urutan tanggal; dialog ringkasan; kartu **Tambah Edukasi** + opsi **Add Education** di drawer; halaman utama bisa di-scroll; widget test baru |
 
 ## Pertanyaan Reflektif
 
@@ -91,6 +92,38 @@ flutter analyze && flutter test   # cek kode & test
    - Menambah atau memperbarui package/plugin di `pubspec.yaml` yang punya kode native.
    - Mengubah kode native (Android/iOS), aset tertentu, atau konfigurasi seperti `AndroidManifest.xml`.
 
+### Tugas 8
+
+1. **`Navigator.push()`, `Navigator.pushReplacement()`, dan `Navigator.pop()`**
+
+   `Navigator` mengelola halaman sebagai *stack* (tumpukan route).
+   - `Navigator.push()` menaruh route baru **di atas** route sekarang. Halaman lama tetap ada di bawahnya, jadi pengguna bisa kembali dengan tombol back.
+   - `Navigator.pushReplacement()` **mengganti** route paling atas dengan route baru. Halaman lama dibuang dari stack, jadi tombol back tidak kembali ke sana.
+   - `Navigator.pop()` **menghapus** route paling atas sehingga pengguna kembali ke route di bawahnya. Di proyek ini `pop()` juga dipakai untuk menutup `AlertDialog`, karena dialog juga sebuah route.
+
+   Kartu **Tambah Edukasi** di halaman utama memakai `Navigator.push()` (di `lib/widgets/project_card.dart`), sehingga stack menjadi `[MyHomePage, EducationFormPage]` dan tombol back bawaan perangkat membawa pengguna kembali ke halaman utama. Opsi **Home** di `LeftDrawer` memakai `Navigator.pushReplacement()` dengan `MyHomePage` sebagai route baru: halaman formulir yang sedang terbuka diganti oleh halaman utama, jadi stack tidak terus menumpuk setiap kali pengguna berpindah lewat drawer. Ini juga cara yang mudah untuk kembali ke halaman utama saat aplikasi dijalankan di Chrome.
+
+2. **Konsistensi dengan `Scaffold`, `AppBar`, dan `Drawer`**
+
+   `Scaffold` menyediakan kerangka yang sama untuk setiap halaman: slot `appBar` di atas, `drawer` di kiri, dan `body` di tengah. Karena halaman utama, form proyek, dan form edukasi memakai susunan yang sama, pengguna selalu menemukan judul di tempat yang sama dan ikon menu (hamburger) di pojok kiri atas. `LeftDrawer` ditulis sekali di `lib/widgets/left_drawer.dart` lalu dipakai (`drawer: const LeftDrawer()`) di ketiga halaman, sehingga menambah opsi baru seperti **Add Education** cukup dilakukan di satu tempat.
+
+   Contoh warna tema: `MaterialApp` di `main.dart` memakai `ColorScheme.fromSeed(seedColor: Colors.indigo)`. Warna `Theme.of(context).colorScheme.primary` dipakai untuk latar `AppBar` di `MyHomePage` dan juga untuk `AppBar` serta tombol **Simpan** di `EducationFormPage`, sementara `DrawerHeader` memakai indigo. Jadi semua halaman memakai keluarga warna indigo yang sama, dan jika seed warna diubah, AppBar kedua halaman ikut berubah.
+
+3. **Tata letak formulir, widget pengatur jarak, dan widget penggulir**
+
+   Formulir disusun sebagai satu kolom vertikal (`Column` dengan `crossAxisAlignment: CrossAxisAlignment.stretch`): satu input per baris dengan lebar penuh, lalu tombol **Simpan** di paling bawah. Susunan ini paling mudah dibaca di layar ponsel yang sempit, urutan pengisiannya jelas dari atas ke bawah, dan label serta pesan error setiap kolom punya ruang yang cukup.
+
+   - **Widget pengatur jarak:** `SingleChildScrollView(padding: EdgeInsets.all(16))` memberi jarak dari tepi layar, dan `SizedBox(height: 12)` di antara input (serta `SizedBox(height: 24)` sebelum tombol) memberi jarak yang seragam sehingga kolom tidak saling menempel dan pesan error tidak menabrak kolom berikutnya.
+   - **Widget penggulir:** `SingleChildScrollView` membuat seluruh isi form bisa digulir. Saat keyboard muncul, `Scaffold` mengecilkan area `body`; tanpa penggulir, `Column` akan *overflow* (garis kuning-hitam) dan tombol **Simpan** bisa tertutup keyboard. Dengan penggulir, semua input dan tombol tetap bisa dijangkau. `SafeArea` menjaga isi tidak tertutup notch atau status bar. Halaman utama juga dibungkus `SingleChildScrollView` agar grid kartu aksi (sekarang dua baris) tidak meluap di layar pendek.
+
+4. **`GlobalKey<FormState>`, `validator`, dan `validate()`**
+
+   - `GlobalKey<FormState>` (`_formKey`) dipasang di widget `Form` sehingga kita bisa mengakses state form dari luar widget tree-nya, misalnya dari `onPressed` tombol **Simpan** lewat `_formKey.currentState`.
+   - `validator` adalah fungsi di setiap `TextFormField` yang menerima nilai input dan mengembalikan `null` jika valid, atau `String` pesan error jika tidak valid.
+   - `validate()` dipanggil saat **Simpan** ditekan. Method ini menjalankan semua `validator` di dalam `Form`, menampilkan pesan error di bawah kolom yang bermasalah, lalu mengembalikan `true` hanya jika semuanya valid. Dialog ringkasan hanya ditampilkan jika hasilnya `true`.
+
+   Contoh nilai yang ditolak: kolom **IPK** diisi `4.5`. Kolom ini memakai `keyboardType: TextInputType.numberWithOptions(decimal: true)`, sehingga di ponsel yang muncul adalah keyboard angka, tetapi keyboard hanya membatasi *cara* mengetik, bukan *nilai* yang masuk akal. `4.5` adalah angka yang sah, tetapi di luar rentang IPK 0.00–4.00, jadi validator menolaknya dengan pesan *"IPK harus berada di antara 0.00 dan 4.00"*. Selain itu, keyboard angka tidak berlaku di Chrome/desktop, pengguna masih bisa menempelkan (*paste*) teks bebas, dan aturan seperti "tidak boleh hanya spasi" (`"   "` pada Nama Institusi), batas 100 karakter, atau "tanggal selesai tidak boleh sebelum tanggal mulai" sama sekali tidak bisa dijamin oleh jenis input. Karena itu validasi tetap diperlukan.
+
 ## AI Disclosure
 
 **Tools yang dipakai:** Claude Code (model Claude Opus 5.5) di ekstensi VS Code, dengan akses ke folder proyek dan terminal.
@@ -105,3 +138,15 @@ flutter analyze && flutter test   # cek kode & test
 - Membuat commit bertahap dengan format *conventional commits*.
 
 **Verifikasi dan batasan:** Hasil AI diverifikasi dengan `flutter analyze` (*No issues found!*) dan `flutter test` (semua test lolos). AI tidak bisa melihat tampilan aplikasi secara langsung, jadi tampilan tetap saya cek sendiri dengan `flutter run`. Jawaban pertanyaan reflektif sudah saya baca ulang dan cocokkan dengan dokumentasi Flutter serta materi Tutorial 08 agar saya memahaminya sendiri.
+
+### Tugas 8
+
+**Strategi prompting:** Saya memberikan PDF soal Tugas 8 kepada Claude dan meminta Claude membaca kode hasil Tutorial 09 terlebih dahulu, lalu membuat formulir baru mengikuti pola `ProjectFormPage` dan drawer yang sudah ada, bekerja di branch `feat/tugas-8`.
+
+**Bagian yang dibantu AI:**
+- Membuat `lib/screens/education_form.dart` (field, validator, `showDatePicker`, dialog ringkasan).
+- Menambahkan kartu **Tambah Edukasi** (`menu.dart`, `project_card.dart`) dan opsi **Add Education** di `left_drawer.dart`, serta membuat halaman utama bisa digulir.
+- Menambahkan widget test untuk navigasi kartu/drawer dan validasi form edukasi.
+- Menyusun draf jawaban pertanyaan reflektif Tugas 8.
+
+**Keterbatasan AI dan perbaikan:** Test pertama buatan AI memakai `tester.pageBack()` untuk menguji tombol kembali dan gagal, karena halaman yang punya `drawer` menampilkan ikon hamburger, bukan panah kembali di `AppBar`. Test diperbaiki untuk mensimulasikan tombol back sistem (`handlePopRoute`), yang memang menjadi alur kembali dari kartu aksi. AI juga tidak bisa melihat tampilan secara langsung, sehingga tata letak di layar selebar ponsel (termasuk saat keyboard muncul) saya cek sendiri dengan `flutter run -d chrome`. Hasil akhir diverifikasi dengan `flutter analyze` (*No issues found!*) dan `flutter test` (8 test lolos).
