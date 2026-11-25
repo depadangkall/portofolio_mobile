@@ -20,13 +20,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
   /// Batas panjang teks, disamakan dengan `max_length` pada model Django.
   static const int _maxTextLength = 100;
 
-  static const List<String> _degrees = [
-    'SMA/SMK',
-    'D3',
-    'S1',
-    'S2',
-    'S3',
-  ];
+  static const List<String> _degrees = ['SMA/SMK', 'D3', 'S1', 'S2', 'S3'];
 
   final _institutionController = TextEditingController();
   final _majorController = TextEditingController();
@@ -212,10 +206,12 @@ class _EducationFormPageState extends State<EducationFormPage> {
                   initialValue: _degree,
                   decoration: _decoration('Jenjang'),
                   items: _degrees
-                      .map((degree) => DropdownMenuItem(
-                            value: degree,
-                            child: Text(degree),
-                          ))
+                      .map(
+                        (degree) => DropdownMenuItem(
+                          value: degree,
+                          child: Text(degree),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) => setState(() => _degree = value!),
                 ),
@@ -258,10 +254,14 @@ class _EducationFormPageState extends State<EducationFormPage> {
                 const SizedBox(height: 12.0),
                 TextFormField(
                   controller: _gpaController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   textInputAction: TextInputAction.done,
-                  decoration: _decoration('IPK (opsional)', hint: '0.00 - 4.00'),
+                  decoration: _decoration(
+                    'IPK (opsional)',
+                    hint: '0.00 - 4.00',
+                  ),
                   validator: _validateGpa,
                 ),
                 const SizedBox(height: 24.0),

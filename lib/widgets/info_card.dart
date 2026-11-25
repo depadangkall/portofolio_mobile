@@ -21,10 +21,7 @@ class InfoCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8.0),
             Text(content, textAlign: TextAlign.center),
           ],

@@ -17,8 +17,8 @@ class MyHomePage extends StatelessWidget {
 
   /// Daftar tombol aksi; setiap item punya warna latar yang berbeda.
   final List<ItemHomepage> items = const [
-    ItemHomepage("Lihat Proyek", Icons.folder, Colors.blue),
-    ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
+    ItemHomepage("Lihat Pengalaman", Icons.work, Colors.blue),
+    ItemHomepage("Tambah Pengalaman", Icons.add_circle, Colors.green),
     ItemHomepage("Tambah Edukasi", Icons.school, Colors.orange),
     ItemHomepage("Logout", Icons.logout, Colors.red),
   ];
@@ -29,10 +29,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'MyPortfolio',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         iconTheme: const IconThemeData(color: Colors.white),
