@@ -1,6 +1,6 @@
 # MyPortfolio Mobile
 
-Aplikasi Flutter portofolio pribadi **I Gede Devadatta** (2506622481, PBP A). Menampilkan kartu NPM/nama/kelas, tombol aksi berwarna (Lihat Proyek, Tambah Proyek, Tambah Edukasi, Logout), drawer navigasi, serta formulir Tambah Proyek dan Tambah Edukasi dengan validasi dan dialog ringkasan.
+Aplikasi Flutter portofolio pribadi **I Gede Devadatta** (2506622481, PBP A). Menampilkan kartu NPM/nama/kelas, tombol aksi berwarna, dan drawer navigasi. Data pengalaman diambil dari backend Django REST Framework ([myportofolio](https://i-gede57-myportofolio.pws.cs.ui.ac.id)) lewat `/api/v1/experiences/`; menambah pengalaman butuh login dengan token. Ada juga formulir Tambah Edukasi (lokal) dengan validasi dan dialog ringkasan.
 
 ## Cara Menjalankan
 
@@ -8,9 +8,16 @@ Aplikasi Flutter portofolio pribadi **I Gede Devadatta** (2506622481, PBP A). Me
 git clone https://github.com/depadangkall/portofolio_mobile.git
 cd portofolio_mobile
 flutter pub get
-flutter run -d chrome
-flutter analyze && flutter test   # cek kode & test
+dart run build_runner build --delete-conflicting-outputs   # generate *.g.dart
+
+# Backend Django lokal harus jalan dulu (python manage.py runserver)
+flutter run                                                          # emulator Android (http://10.0.2.2:8000)
+flutter run -d chrome --dart-define=API_BASE_URL=http://localhost:8000  # Chrome
+
+flutter analyze && flutter test   # cek kode & test (API di-mock, tidak butuh server)
 ```
+
+CI/CD ada di `.github/workflows/main.yaml`: job `build` (format, analyze, test) lalu `build_apk` yang mengunggah artefak `app-release-apk`. Set repository variable `API_BASE_URL` di GitHub agar APK mengarah ke backend yang sudah di-deploy.
 
 ## Progres Mingguan
 
